@@ -25,7 +25,13 @@ const findById = async (event) => {
 
     const account = result.Item;
 
-    // todo gbr hay que darle vuelta a los datos para que se muestren de primero los mas recientes
+    var sort_banking_movements = [];
+    
+    account.banking_movements.forEach(element => {
+      sort_banking_movements = [element].concat(sort_banking_movements);
+    });
+
+    account.banking_movements = sort_banking_movements;
 
     if(offset*records < account.banking_movements.length) {
       if(offset*records+records < account.banking_movements.length) {
