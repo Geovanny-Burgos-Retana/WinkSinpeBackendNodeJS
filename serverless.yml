@@ -1,0 +1,47 @@
+service: wink-sinpe-backend-nodejs
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-west-2
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:us-west-2:191878012471:table/Account
+
+functions:
+  save:
+    handler: src/account/save.save
+    events:
+      - httpApi:
+          path: /account
+          method: post
+  findById:
+    handler: src/account/findById.findById
+    events:
+      - httpApi:
+          path: /account/{id}
+          method: get
+  saveMovement:
+    handler: src/movement/saveMovement.saveMovement
+    events:
+      - httpApi:
+          path: /movement
+          method: post
+
+resources:
+  Resources:
+    Account:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Account
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
