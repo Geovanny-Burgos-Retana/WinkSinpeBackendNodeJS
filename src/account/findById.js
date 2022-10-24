@@ -39,6 +39,8 @@ const findById = async (event) => {
       } else {
         account.banking_movements = account.banking_movements.slice(offset*records, account.banking_movements.length);
       }
+    } else {
+      account.banking_movements = [];
     }
 
     console.log(account);
